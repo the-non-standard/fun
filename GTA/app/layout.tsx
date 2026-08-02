@@ -19,7 +19,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — Turn your photo into GTA character art`,
+    default: `${SITE.name}: Turn your photo into GTA character art`,
     template: `%s · ${SITE.name}`,
   },
   description: SITE.description,
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     "personalized gift",
   ],
   openGraph: {
-    title: `${SITE.name} — Turn your photo into GTA character art`,
+    title: `${SITE.name}: Turn your photo into GTA character art`,
     description: SITE.description,
     url: SITE.url,
     siteName: SITE.name,
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — Turn your photo into GTA character art`,
+    title: `${SITE.name}: Turn your photo into GTA character art`,
     description: SITE.description,
   },
 };

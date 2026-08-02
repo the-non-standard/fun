@@ -6,19 +6,19 @@ const STEPS = [
   {
     icon: Camera,
     title: "Send your photo",
-    body: "One clear photo — solo, your duo or the whole crew. Phone selfies work great.",
+    body: "One clear photo: solo, your duo or the whole crew. Phone selfies work great.",
     accent: "from-neon-cyan to-vice-purple",
   },
   {
     icon: Wand2,
     title: "Pick your vibe",
-    body: "Choose a style, drop in add-ons — cigar, baddies, exotic car, your city — and the name for your cover.",
+    body: "Choose a style, drop in add-ons (cigar, baddies, exotic car, your city) and the name for your cover.",
     accent: "from-neon-pink to-sun",
   },
   {
     icon: Download,
     title: "Get your character",
-    body: "In 48–72h you get your GTA-style art, ready to post. Want it on a tee? We print it.",
+    body: "In 48-72h you get your GTA-style art, ready to post. Want it on a tee? We print it.",
     accent: "from-sun to-money",
   },
 ];
@@ -30,7 +30,7 @@ export default function HowItWorks() {
         <SectionHeading
           eyebrow="How it works"
           title={<>Three steps to the streets</>}
-          subtitle="No app, no waiting rooms. Just send a photo and we handle the rest — hand-drawn, not a cheap filter."
+          subtitle="No app, no waiting rooms. Just send a photo and we handle the rest. Hand-drawn, not a cheap filter."
         />
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">

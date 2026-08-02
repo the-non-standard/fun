@@ -1,5 +1,5 @@
 /**
- * Pricing model — drives both the homepage pricing section and the
+ * Pricing model. Drives both the homepage pricing section and the
  * live order-builder calculator. Change numbers here and both update.
  * Currency is configured in lib/config.ts (USD by default).
  */
@@ -22,7 +22,7 @@ export const STYLES: Style[] = [
   {
     id: "cover-grid",
     name: "Cover Grid",
-    blurb: "Multi-panel cover art — perfect for a squad, each in their own frame.",
+    blurb: "Multi-panel cover art, perfect for a squad, each in their own frame.",
     art: "group",
   },
   {
@@ -64,7 +64,7 @@ export const PACKAGES: Package[] = [
   {
     id: "crew",
     name: "The Crew",
-    people: "3–6 people",
+    people: "3 to 6 people",
     peopleMax: 6,
     price: 89,
     blurb: "The whole gang on one cover. Friends, family, or the whole squad.",
@@ -94,10 +94,10 @@ export type Addon = {
 export const ADDONS: Addon[] = [
   { id: "cigar", name: "Cigar / Blunt", price: 6, icon: "Flame", blurb: "Light one up. Instant boss energy." },
   { id: "baddies", name: "Baddies", price: 10, icon: "Users", blurb: "Add background models to your scene." },
-  { id: "exotic-car", name: "Exotic Car", price: 9, icon: "Car", blurb: "Supercar, lowrider or muscle — your pick." },
+  { id: "exotic-car", name: "Exotic Car", price: 9, icon: "Car", blurb: "Supercar, lowrider or muscle. Your pick." },
   { id: "location", name: "Custom City", price: 8, icon: "MapPin", blurb: "Your hometown skyline in the backdrop." },
   { id: "pet", name: "Pet / Guard Dog", price: 8, icon: "PawPrint", blurb: "Dobermans, a bulldog, or your real pet." },
-  { id: "prop", name: "Prop / Weapon", price: 7, icon: "Crosshair", blurb: "A bat, a mic, a controller — a signature prop." },
+  { id: "prop", name: "Prop / Weapon", price: 7, icon: "Crosshair", blurb: "A bat, a mic, a controller. A signature prop." },
   { id: "ice", name: "Gold & Ice", price: 5, icon: "Gem", blurb: "Chains, grills and diamonds. Drip maxed." },
   { id: "night", name: "Neon Night", price: 6, icon: "Moon", blurb: "Swap the sunset for a neon night city." },
 ];

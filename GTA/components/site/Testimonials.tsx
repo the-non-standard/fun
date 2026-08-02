@@ -7,7 +7,7 @@ import SectionHeading from "./SectionHeading";
 import WantedStars from "./WantedStars";
 
 /**
- * Placeholder testimonials — replace with real customer reviews before launch.
+ * Placeholder testimonials, replace with real customer reviews before launch.
  */
 const REVIEWS = [
   {

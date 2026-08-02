@@ -15,7 +15,7 @@ export default function AddonsShowcase() {
         <SectionHeading
           eyebrow="Load out"
           title={<>Stack the add-ons</>}
-          subtitle="Build the scene you want. Mix and match — every add-on is drawn straight into your art."
+          subtitle="Build the scene you want. Mix and match, every add-on is drawn straight into your art."
         />
 
         <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-4">

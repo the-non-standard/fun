@@ -9,7 +9,7 @@
  *   1. Open each URL below in your browser and "Save image as…" into
  *      GTA/public/art/  (e.g. public/art/hero.jpg).
  *   2. Replace the URL with the local path, e.g. "/art/hero.jpg".
- * Nothing else needs to change — every component reads from this file, and a
+ * Nothing else needs to change. Every component reads from this file, and a
  * neon poster-frame fallback shows if any image is slow or missing.
  * ---------------------------------------------------------------------------
  */
@@ -22,7 +22,7 @@ export const ART = {
   group:
     "https://v3b.fal.media/files/b/0aa4b723/Mvu7GENyRvFOq-9YCdJNO_6bc4165648174995b2657bdb0f87207b.jpg",
   tshirt:
-    "https://v3b.fal.media/files/b/0aa4b74c/Q70MoTw6-G_h2LgYuhr7j_366d6c93ebbc48ea9b8e66dee98326b7.jpg",
+    "https://v3b.fal.media/files/b/0aa4b878/uLc9ut3B3li-twJDOOvSD_51e01570d95444c999cbd46d06380b15.jpg",
   couple:
     "https://v3b.fal.media/files/b/0aa4b74d/9-MuPRutm6fi7B_Sfkz6a_027e9ade56b14d94b9eaf1038a25434c.jpg",
   womanSuv:

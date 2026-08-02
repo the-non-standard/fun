@@ -35,7 +35,7 @@ function buildHtml(o: OrderPayload, hasPhoto: boolean) {
   return `
   <div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;max-width:560px;margin:auto;background:#0f0d1a;border-radius:16px;overflow:hidden">
     <div style="background:linear-gradient(100deg,#ffb020,#ff2d95 60%,#8b2fff);padding:22px 26px">
-      <div style="font-size:22px;font-weight:800;letter-spacing:1px;color:#0a0510">WANTED LEVEL — NEW ORDER</div>
+      <div style="font-size:22px;font-weight:800;letter-spacing:1px;color:#0a0510">WANTED LEVEL: NEW ORDER</div>
       <div style="color:#1a0a18;font-weight:600">${o.artName}</div>
     </div>
     <div style="padding:22px 26px;background:#ffffff">
@@ -50,9 +50,9 @@ function buildHtml(o: OrderPayload, hasPhoto: boolean) {
       </table>
       <hr style="border:none;border-top:1px solid #eee;margin:18px 0" />
       <table style="width:100%;border-collapse:collapse;font-size:14px">
-        ${row("Customer", o.customer.name || "—")}
+        ${row("Customer", o.customer.name || "-")}
         ${row("Email", `<a href="mailto:${o.customer.email}">${o.customer.email}</a>`)}
-        ${row("Notes", o.customer.notes || "—")}
+        ${row("Notes", o.customer.notes || "-")}
       </table>
     </div>
     <div style="padding:14px 26px;background:#0f0d1a;color:#9a94ad;font-size:12px">
@@ -120,7 +120,7 @@ export async function POST(request: Request) {
       from,
       to: [to],
       replyTo: order.customer.email,
-      subject: `New order: ${order.artName} — ${order.styleName} (${money(order.total)})`,
+      subject: `New order: ${order.artName}, ${order.styleName} (${money(order.total)})`,
       html: buildHtml(order, !!photo),
       attachments,
     });

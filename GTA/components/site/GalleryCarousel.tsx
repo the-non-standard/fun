@@ -40,7 +40,7 @@ export default function GalleryCarousel() {
             align="left"
             eyebrow="The lineup"
             title={<>Straight off the loading screen</>}
-            subtitle="Every character is drawn from scratch — no two are the same. Drag to browse the lineup."
+            subtitle="Every character is drawn from scratch, no two are the same. Drag to browse the lineup."
             className="!mx-0"
           />
           <div className="hidden gap-2 sm:flex">
@@ -73,7 +73,7 @@ export default function GalleryCarousel() {
                 <div className="group relative">
                   <Art
                     src={ART[item.key]}
-                    alt={`${item.title} — GTA style character art`}
+                    alt={`${item.title}, GTA style character art`}
                     label={item.title}
                     className="aspect-[4/5] w-full transition-transform duration-500 group-hover:scale-[1.02]"
                   />

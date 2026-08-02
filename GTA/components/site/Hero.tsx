@@ -62,7 +62,7 @@ export default function Hero() {
           </h1>
 
           <p className="mt-6 text-lg leading-relaxed text-ash">
-            Send us a photo — solo, your duo, or the whole crew — and we hand-craft
+            Send us a photo (solo, your duo, or the whole crew) and we hand-craft
             you into a{" "}
             <span className="text-bone">GTA-style character</span>, straight off a
             loading screen. Your name on it. Cigars, baddies, exotic cars, your city.
@@ -84,7 +84,7 @@ export default function Hero() {
 
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
             {[
-              ["48–72h", "Delivery"],
+              ["48-72h", "Delivery"],
               ["From $29", "Solo art"],
               ["Print-ready", "Tees & posters"],
             ].map(([big, small]) => (
@@ -118,7 +118,7 @@ export default function Hero() {
                   <div className="relative">
                     <Art
                       src={ART[item.key]}
-                      alt={`${item.title} — GTA style character art`}
+                      alt={`${item.title}, GTA style character art`}
                       label={item.title}
                       eager
                       className="aspect-[4/5] w-full"

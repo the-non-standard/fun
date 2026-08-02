@@ -176,7 +176,7 @@ export default function OrderBuilder({
       `(Attach your photo to this email.)`,
     ];
     return `mailto:${SITE.email}?subject=${encodeURIComponent(
-      `Order: ${artName || "GTA art"} — ${style.name}`,
+      `Order: ${artName || "GTA art"}, ${style.name}`,
     )}&body=${encodeURIComponent(lines.join("\n"))}`;
   };
 
@@ -262,7 +262,7 @@ export default function OrderBuilder({
       <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_360px] lg:gap-12">
         {/* ---------------- builder ---------------- */}
         <div className="flex flex-col gap-12">
-          {/* Step 1 — style */}
+          {/* Step 1: style */}
           <Step n={1} title="Choose your style">
             <div className="grid gap-4 sm:grid-cols-3">
               {STYLES.map((s) => {
@@ -303,7 +303,7 @@ export default function OrderBuilder({
             </div>
           </Step>
 
-          {/* Step 2 — people */}
+          {/* Step 2: people */}
           <Step n={2} title="How many people?">
             <div className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-white/10 bg-noir-800/60 p-5">
               <div>
@@ -337,7 +337,7 @@ export default function OrderBuilder({
             </div>
           </Step>
 
-          {/* Step 3 — photo */}
+          {/* Step 3: photo */}
           <Step n={3} title="Upload your photo">
             <input
               ref={fileRef}
@@ -413,7 +413,7 @@ export default function OrderBuilder({
             )}
           </Step>
 
-          {/* Step 4 — name */}
+          {/* Step 4: name */}
           <Step n={4} title="The name on your art">
             <input
               value={artName}
@@ -429,7 +429,7 @@ export default function OrderBuilder({
             </div>
           </Step>
 
-          {/* Step 5 — add-ons */}
+          {/* Step 5: add-ons */}
           <Step n={5} title="Stack your add-ons" optional>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {ADDONS.map((a) => {
@@ -465,7 +465,7 @@ export default function OrderBuilder({
             </div>
           </Step>
 
-          {/* Step 6 — premium */}
+          {/* Step 6: premium */}
           <Step n={6} title="Premium add-ons" optional>
             <div className="flex flex-col gap-3">
               <PremiumRow
@@ -514,7 +514,7 @@ export default function OrderBuilder({
             </div>
           </Step>
 
-          {/* Step 7 — details */}
+          {/* Step 7: details */}
           <Step n={7} title="Your details">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Your name">
@@ -608,7 +608,7 @@ export default function OrderBuilder({
 
             <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-ash">
               <ShieldCheck size={14} className="text-money" />
-              No payment now — we confirm first.
+              No payment now, we confirm first.
             </p>
           </div>
         </aside>

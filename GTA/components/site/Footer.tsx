@@ -47,7 +47,7 @@ export default function Footer() {
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-ash">
               Custom GTA-style character art from your photos. Solo, squad, or the
-              whole crew — drawn like a loading screen and printed on premium tees.
+              whole crew, drawn like a loading screen and printed on premium tees.
             </p>
             <div className="mt-5 flex gap-3">
               {[

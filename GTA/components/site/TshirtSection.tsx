@@ -7,7 +7,7 @@ import Art from "./Art";
 import Reveal from "./Reveal";
 
 const PERKS = [
-  "Heavyweight premium tee, sizes S–3XL",
+  "Heavyweight premium tee, sizes S to 3XL",
   "Your character printed front & center",
   "Full digital art file included",
   "Worldwide shipping",
@@ -41,7 +41,7 @@ export default function TshirtSection() {
               <br /> on a tee
             </h2>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-ash">
-              {PREMIUM.tshirt.blurb} The ultimate flex — walk around as your own GTA
+              {PREMIUM.tshirt.blurb} The ultimate flex. Walk around as your own GTA
               character.
             </p>
 

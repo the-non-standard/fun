@@ -8,7 +8,7 @@ import SectionHeading from "./SectionHeading";
 const FAQS = [
   {
     q: "What kind of photo should I send?",
-    a: "One clear, well-lit photo where faces are easy to see. A good phone selfie is perfect. For groups, a photo where everyone is visible works best — or send separate photos and tell us who's who.",
+    a: "One clear, well-lit photo where faces are easy to see. A good phone selfie is perfect. For groups, a photo where everyone is visible works best, or send separate photos and tell us who's who.",
   },
   {
     q: "How long does it take?",
@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: "Can you do groups and the whole family?",
-    a: "Absolutely. Solo, duo, or a crew of up to 6 on one cover. Bigger than that or a business/team order — message us for a custom quote.",
+    a: "Absolutely. Solo, duo, or a crew of up to 6 on one cover. Bigger than that or a business/team order, message us for a custom quote.",
   },
   {
     q: "What do I actually get?",
@@ -24,7 +24,7 @@ const FAQS = [
   },
   {
     q: "Do I get revisions?",
-    a: "Yes — every order includes one free revision round so we can tweak details until it's right.",
+    a: "Yes, every order includes one free revision round so we can tweak details until it's right.",
   },
   {
     q: "Is this an official GTA / Rockstar product?",
