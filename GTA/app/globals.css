@@ -1,0 +1,341 @@
+@import "tailwindcss";
+
+/* ============================================================
+   WANTED LEVEL — design tokens
+   ============================================================ */
+@theme {
+  --font-display: var(--font-anton);
+  --font-body: var(--font-inter);
+
+  --color-noir: #09080f;
+  --color-noir-800: #0f0d1a;
+  --color-noir-700: #171325;
+  --color-noir-600: #211a38;
+  --color-bone: #f4f1ea;
+  --color-ash: #9a94ad;
+
+  --color-neon-pink: #ff2d95;
+  --color-neon-hot: #ff0a6b;
+  --color-neon-cyan: #19e3e6;
+  --color-vice-purple: #8b2fff;
+  --color-vice-violet: #b674ff;
+  --color-sun: #ffb020;
+  --color-sun-deep: #ff7a1a;
+  --color-money: #37d67a;
+  --color-star: #ffd23f;
+
+  --shadow-neon-pink: 0 0 24px rgba(255, 45, 149, 0.55);
+  --shadow-neon-cyan: 0 0 24px rgba(25, 227, 230, 0.5);
+
+  --ease-out-back: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ============================================================
+   Base
+   ============================================================ */
+* {
+  border-color: color-mix(in srgb, var(--color-bone) 12%, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-noir);
+  color: var(--color-bone);
+  font-family: var(--font-body), system-ui, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Ambient neon wash that sits behind everything */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    radial-gradient(60% 55% at 12% 8%, rgba(139, 47, 255, 0.28), transparent 60%),
+    radial-gradient(55% 50% at 88% 4%, rgba(255, 45, 149, 0.26), transparent 60%),
+    radial-gradient(70% 60% at 50% 108%, rgba(25, 227, 230, 0.18), transparent 60%),
+    linear-gradient(180deg, #0a0812 0%, #09080f 45%, #070510 100%);
+}
+
+/* Film grain overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--color-neon-pink);
+  color: #fff;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+::-webkit-scrollbar-track {
+  background: #0b0912;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-neon-hot), var(--color-vice-purple));
+  border-radius: 999px;
+  border: 2px solid #0b0912;
+}
+
+/* ============================================================
+   Typography helpers
+   ============================================================ */
+.font-display {
+  font-family: var(--font-display), Impact, sans-serif;
+}
+
+/* GTA loading-screen title: bone fill, heavy black outline */
+.title-gta {
+  font-family: var(--font-display), Impact, sans-serif;
+  text-transform: uppercase;
+  color: var(--color-bone);
+  letter-spacing: 0.005em;
+  line-height: 0.92;
+  -webkit-text-stroke: clamp(1.5px, 0.35vw, 4px) #050309;
+  paint-order: stroke fill;
+  text-shadow:
+    0 clamp(3px, 0.6vw, 7px) 0 rgba(0, 0, 0, 0.55),
+    0 0 34px rgba(255, 45, 149, 0.28);
+}
+
+/* Gradient neon text */
+.text-vice {
+  background: linear-gradient(100deg, var(--color-neon-cyan), var(--color-neon-pink) 55%, var(--color-sun));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.neon-pink {
+  color: var(--color-neon-pink);
+  text-shadow: 0 0 8px rgba(255, 45, 149, 0.7), 0 0 22px rgba(255, 45, 149, 0.4);
+}
+.neon-cyan {
+  color: var(--color-neon-cyan);
+  text-shadow: 0 0 8px rgba(25, 227, 230, 0.7), 0 0 22px rgba(25, 227, 230, 0.4);
+}
+
+.eyebrow {
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.72rem;
+}
+
+/* ============================================================
+   Poster frame — echoes GTA cover panels
+   ============================================================ */
+.poster-frame {
+  position: relative;
+  border: 3px solid #050309;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 2px rgba(255, 255, 255, 0.06),
+    0 22px 50px -20px rgba(0, 0, 0, 0.9);
+  background: #0c0a15;
+}
+.poster-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 -60px 70px -30px rgba(0, 0, 0, 0.85);
+}
+
+/* Image fallback: if a remote art URL never loads, the frame still
+   reads as an intentional neon panel rather than a broken box. */
+.art-fallback {
+  background:
+    radial-gradient(120% 90% at 20% 0%, rgba(255, 45, 149, 0.4), transparent 55%),
+    radial-gradient(120% 90% at 90% 100%, rgba(25, 227, 230, 0.32), transparent 55%),
+    linear-gradient(160deg, #2a1550, #120a24 60%, #06121a);
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  font-family: var(--font-display), sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 1rem;
+  padding: 0.9rem 1.6rem;
+  border-radius: 12px;
+  border: 2px solid #050309;
+  cursor: pointer;
+  transition: transform 0.18s var(--ease-out-back), box-shadow 0.18s, filter 0.18s;
+  will-change: transform;
+  white-space: nowrap;
+}
+.btn:active {
+  transform: translateY(1px) scale(0.99);
+}
+.btn-primary {
+  color: #0a0510;
+  background: linear-gradient(100deg, var(--color-sun), var(--color-neon-pink) 60%, var(--color-vice-purple));
+  box-shadow: 0 10px 30px -8px rgba(255, 45, 149, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px -8px rgba(255, 45, 149, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  filter: saturate(1.1);
+}
+.btn-ghost {
+  color: var(--color-bone);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: color-mix(in srgb, var(--color-bone) 22%, transparent);
+  backdrop-filter: blur(6px);
+}
+.btn-ghost:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-neon-cyan);
+  box-shadow: var(--shadow-neon-cyan);
+  color: #fff;
+}
+.btn-money {
+  color: #06120b;
+  background: linear-gradient(100deg, #4ff08e, var(--color-money));
+  box-shadow: 0 10px 30px -8px rgba(55, 214, 122, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.btn-money:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.1) brightness(1.03);
+}
+
+/* ============================================================
+   Chips / tags
+   ============================================================ */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  border: 1.5px solid color-mix(in srgb, var(--color-bone) 18%, transparent);
+  background: rgba(255, 255, 255, 0.03);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+}
+
+/* Star badge (wanted level) */
+.star-badge {
+  filter: drop-shadow(0 0 6px rgba(255, 210, 63, 0.65));
+}
+
+/* ============================================================
+   Marquee ticker
+   ============================================================ */
+.marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 32s linear infinite;
+}
+.marquee-rev {
+  animation-direction: reverse;
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-pause:hover .marquee {
+  animation-play-state: paused;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-14px); }
+}
+.animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+.animate-pulse-glow { animation: pulse-glow 2.6s ease-in-out infinite; }
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 26s linear infinite; }
+
+/* Reveal on scroll (paired with IntersectionObserver) */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.7s var(--ease-out-back), transform 0.7s var(--ease-out-back);
+}
+.reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+
+/* Form inputs */
+.input {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--color-bone) 15%, transparent);
+  background: color-mix(in srgb, var(--color-noir-800) 70%, transparent);
+  padding: 0.85rem 1rem;
+  color: var(--color-bone);
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.input::placeholder {
+  color: color-mix(in srgb, var(--color-ash) 70%, transparent);
+}
+.input:focus {
+  outline: none;
+  border-color: var(--color-neon-pink);
+  box-shadow: 0 0 0 3px rgba(255, 45, 149, 0.15);
+}
+
+/* Utility: hide scrollbar on horizontal rails */
+.no-bar::-webkit-scrollbar { display: none; }
+.no-bar { scrollbar-width: none; }
+
+/* Section separator: neon hazard stripe */
+.hazard {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    var(--color-sun) 0 18px,
+    #050309 18px 36px
+  );
+}
