@@ -27,6 +27,13 @@ export const ART = {
     "https://v3b.fal.media/files/b/0aa4b74d/9-MuPRutm6fi7B_Sfkz6a_027e9ade56b14d94b9eaf1038a25434c.jpg",
   womanSuv:
     "https://v3b.fal.media/files/b/0aa4b752/1h5Cx_pKt7PTviCO86cZF_ae154bd6cbfc4b189656ed5e6b112de2.jpg",
+  // "In-Game" style: 3D San Andreas / Vice City screenshot look
+  ingameMan1:
+    "https://v3b.fal.media/files/b/0aa4b8b2/Wr2FVCY4mLn9UcZfxt6pq_a4d133ec9b014334aaee157d2a95914d.jpg",
+  ingameMan2:
+    "https://v3b.fal.media/files/b/0aa4b8b2/5Y5SFUTxHqq9pMGfnnTt__4da4cdca9e93472ba91fb9b140cdf6a1.jpg",
+  ingameWoman:
+    "https://v3b.fal.media/files/b/0aa4b8b4/oRnvaEmquIvmU2rbHYNPS_1af7a37744f845968ad7157728c12942.jpg",
 } as const;
 
 export type ArtKey = keyof typeof ART;
