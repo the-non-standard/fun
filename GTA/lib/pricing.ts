@@ -14,28 +14,28 @@ export type Style = {
 
 export const STYLES: Style[] = [
   {
-    id: "in-game",
-    name: "In-Game",
-    blurb: "You, dropped into a 3D GTA world with the radar map, your name and the GTA logo.",
-    art: "ingameMan1",
-  },
-  {
-    id: "loading-screen",
-    name: "Loading Screen",
-    blurb: "The classic. One hero character, bold outlines, city sunset behind you.",
+    id: "ocean-drive",
+    name: "Ocean Drive",
+    blurb: "Daytime Miami beachfront, palms and pastel buildings behind you.",
     art: "hero",
   },
   {
-    id: "cover-grid",
-    name: "Cover Grid",
-    blurb: "Multi-panel cover art, perfect for a squad, each in their own frame.",
-    art: "group",
+    id: "neon-night",
+    name: "Neon Night",
+    blurb: "Nighttime neon and city lights, with a luxury ride.",
+    art: "womanSuv",
   },
   {
-    id: "action-scene",
-    name: "Action Scene",
-    blurb: "You + the car, the crew, the chaos. A full cinematic street scene.",
-    art: "womanSuv",
+    id: "the-block",
+    name: "The Block",
+    blurb: "Neighborhood energy with a lowrider at golden hour.",
+    art: "charCigar",
+  },
+  {
+    id: "the-crew",
+    name: "The Crew",
+    blurb: "Bring the whole squad into one in-game scene.",
+    art: "group",
   },
 ];
 
@@ -56,7 +56,7 @@ export const PACKAGES: Package[] = [
     people: "1 person",
     peopleMax: 1,
     price: 29,
-    blurb: "One character, fully styled. The classic loading-screen hero shot.",
+    blurb: "One character, fully styled, dropped into the GTA world.",
   },
   {
     id: "duo",

@@ -24,9 +24,9 @@ export default function InGameSection() {
               <br /> the game
             </h2>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-ash">
-              Our newest style drops you into a full GTA in-game screenshot,
-              radar map, your name tag, wanted stars and the GTA logo. The most
-              realistic flex we make.
+              Every character we make drops you into a full GTA in-game
+              screenshot, radar map, your name tag, wanted stars and the GTA
+              logo. The most realistic flex there is.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Link href="/ingame" className="btn btn-primary group">

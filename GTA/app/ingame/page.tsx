@@ -18,8 +18,8 @@ export const metadata: Metadata = {
 
 const SAMPLES = [
   { src: ART.ingameMan1, name: "Big Mike", stars: 4 },
-  { src: ART.ingameWoman, name: "Nova", stars: 3 },
-  { src: ART.ingameMan2, name: "305 King", stars: 5 },
+  { src: ART.charWoman, name: "Nova", stars: 3 },
+  { src: ART.charCigar, name: "305 King", stars: 5 },
 ];
 
 const PERKS = [
