@@ -13,17 +13,16 @@ export const metadata: Metadata = {
 export default async function OrderPage({
   searchParams,
 }: {
-  searchParams: Promise<{ people?: string; tshirt?: string }>;
+  searchParams: Promise<{ people?: string }>;
 }) {
   const sp = await searchParams;
   const people = Math.min(Math.max(Number(sp.people) || 1, 1), MAX_PEOPLE);
-  const tshirt = sp.tshirt === "1" || sp.tshirt === "true";
 
   return (
     <>
       <Nav />
       <main>
-        <OrderBuilder initialPeople={people} initialTshirt={tshirt} />
+        <OrderBuilder initialPeople={people} />
       </main>
       <Footer />
     </>

@@ -10,30 +10,22 @@ import {
   Plus,
   Loader2,
   ImageIcon,
-  Mail,
-  PartyPopper,
-  ShieldCheck,
+  Download,
+  RefreshCw,
+  Sparkles,
+  Wand2,
 } from "lucide-react";
-import {
-  STYLES,
-  ADDONS,
-  PREMIUM,
-  PERSON_PRICE,
-  MAX_PEOPLE,
-} from "@/lib/pricing";
+import { STYLES, ADDONS, MAX_PEOPLE } from "@/lib/pricing";
 import { ART } from "@/lib/art";
-import { price, SITE } from "@/lib/config";
 import Icon from "@/components/site/Icon";
+import Art from "@/components/site/Art";
 import WantedStars from "@/components/site/WantedStars";
-
-const TSHIRT_SIZES = ["S", "M", "L", "XL", "2XL", "3XL"];
 
 type Props = {
   initialPeople?: number;
-  initialTshirt?: boolean;
 };
 
-/** Downscale + compress an image so submissions stay small and fast. */
+/** Downscale + compress an image so uploads stay small and fast. */
 async function compressImage(
   file: File,
 ): Promise<{ blob: Blob; dataUrl: string; name: string }> {
@@ -43,14 +35,12 @@ async function compressImage(
     fr.onerror = reject;
     fr.readAsDataURL(file);
   });
-
   const img = await new Promise<HTMLImageElement>((resolve, reject) => {
     const image = new Image();
     image.onload = () => resolve(image);
     image.onerror = reject;
     image.src = dataUrl;
   });
-
   const MAX = 1600;
   let { width, height } = img;
   if (width > MAX || height > MAX) {
@@ -58,14 +48,12 @@ async function compressImage(
     width = Math.round(width * scale);
     height = Math.round(height * scale);
   }
-
   const canvas = document.createElement("canvas");
   canvas.width = width;
   canvas.height = height;
   const ctx = canvas.getContext("2d");
   if (!ctx) return { blob: file, dataUrl, name: file.name };
   ctx.drawImage(img, 0, 0, width, height);
-
   const blob = await new Promise<Blob | null>((resolve) =>
     canvas.toBlob(resolve, "image/jpeg", 0.85),
   );
@@ -74,20 +62,57 @@ async function compressImage(
   return { blob: blob ?? file, dataUrl: outUrl, name };
 }
 
-export default function OrderBuilder({
-  initialPeople = 1,
-  initialTshirt = false,
-}: Props) {
+/**
+ * Draws the generated art onto a canvas and burns the name on, GTA style.
+ * The image is loaded same-origin (via /api/download?inline) so the canvas
+ * can be exported without tainting. Returns an object URL.
+ */
+async function burnName(proxiedUrl: string, name: string): Promise<string> {
+  const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+    const i = new Image();
+    i.crossOrigin = "anonymous";
+    i.onload = () => resolve(i);
+    i.onerror = reject;
+    i.src = proxiedUrl;
+  });
+  const W = Math.min(img.naturalWidth || 1200, 1400);
+  const scale = W / (img.naturalWidth || W);
+  const H = Math.round((img.naturalHeight || W) * scale);
+  const canvas = document.createElement("canvas");
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("no ctx");
+  ctx.drawImage(img, 0, 0, W, H);
+
+  const label = (name || "").trim().toUpperCase();
+  if (label) {
+    const size = Math.round(W / 11);
+    ctx.font = `700 ${size}px Impact, "Arial Black", sans-serif`;
+    ctx.textBaseline = "alphabetic";
+    ctx.lineJoin = "round";
+    const x = Math.round(W * 0.05);
+    const y = Math.round(H - H * 0.055);
+    ctx.strokeStyle = "#050309";
+    ctx.lineWidth = Math.max(4, size / 7);
+    ctx.strokeText(label, x, y);
+    ctx.fillStyle = "#f4f1ea";
+    ctx.fillText(label, x, y);
+  }
+  const out = await new Promise<Blob | null>((r) =>
+    canvas.toBlob(r, "image/jpeg", 0.92),
+  );
+  if (!out) throw new Error("compose failed");
+  return URL.createObjectURL(out);
+}
+
+export default function OrderBuilder({ initialPeople = 1 }: Props) {
   const [styleId, setStyleId] = useState(STYLES[0].id);
   const [people, setPeople] = useState(
     Math.min(Math.max(initialPeople, 1), MAX_PEOPLE),
   );
   const [artName, setArtName] = useState("");
   const [addons, setAddons] = useState<Set<string>>(new Set());
-  const [tshirt, setTshirt] = useState(initialTshirt);
-  const [tshirtSize, setTshirtSize] = useState("L");
-  const [hires, setHires] = useState(false);
-  const [rush, setRush] = useState(false);
 
   const [photo, setPhoto] = useState<{
     blob: Blob;
@@ -97,32 +122,19 @@ export default function OrderBuilder({
   const [photoBusy, setPhotoBusy] = useState(false);
   const [dragOver, setDragOver] = useState(false);
 
-  const [custName, setCustName] = useState("");
-  const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("");
-
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "error">(
+  const [status, setStatus] = useState<"idle" | "generating" | "done" | "error">(
     "idle",
   );
+  const [resultUrl, setResultUrl] = useState<string | null>(null);
+  const [downloadUrl, setDownloadUrl] = useState<string>("");
   const [errorMsg, setErrorMsg] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
   const style = STYLES.find((s) => s.id === styleId)!;
-  const basePrice = PERSON_PRICE[people] ?? PERSON_PRICE[MAX_PEOPLE];
-
   const selectedAddons = useMemo(
     () => ADDONS.filter((a) => addons.has(a.id)),
     [addons],
   );
-
-  const total = useMemo(() => {
-    let t = basePrice;
-    selectedAddons.forEach((a) => (t += a.price));
-    if (tshirt) t += PREMIUM.tshirt.price;
-    if (hires) t += PREMIUM.hires.price;
-    if (rush) t += PREMIUM.rush.price;
-    return t;
-  }, [basePrice, selectedAddons, tshirt, hires, rush]);
 
   const toggleAddon = (id: string) =>
     setAddons((prev) => {
@@ -141,8 +153,7 @@ export default function OrderBuilder({
     setErrorMsg("");
     setPhotoBusy(true);
     try {
-      const out = await compressImage(file);
-      setPhoto(out);
+      setPhoto(await compressImage(file));
     } catch {
       setErrorMsg("Couldn't read that image. Try another one.");
     } finally {
@@ -150,102 +161,92 @@ export default function OrderBuilder({
     }
   }, []);
 
-  const valid =
-    !!photo && artName.trim().length > 0 && /\S+@\S+\.\S+/.test(email);
+  const valid = !!photo;
 
-  const buildMailto = () => {
-    const lines = [
-      `New WANTED LEVEL order`,
-      ``,
-      `Style: ${style.name}`,
-      `People: ${people}`,
-      `Name on art: ${artName}`,
-      `Add-ons: ${selectedAddons.map((a) => a.name).join(", ") || "none"}`,
-      `Premium: ${[
-        tshirt ? `T-shirt (${tshirtSize})` : null,
-        hires ? "Hi-res file" : null,
-        rush ? "24h rush" : null,
-      ]
-        .filter(Boolean)
-        .join(", ") || "none"}`,
-      `Total: ${price(total)}`,
-      ``,
-      `From: ${custName || "(name)"} <${email || "(email)"}>`,
-      `Notes: ${notes || "-"}`,
-      ``,
-      `(Attach your photo to this email.)`,
-    ];
-    return `mailto:${SITE.email}?subject=${encodeURIComponent(
-      `Order: ${artName || "GTA art"}, ${style.name}`,
-    )}&body=${encodeURIComponent(lines.join("\n"))}`;
-  };
-
-  const submit = async () => {
-    if (!valid || !photo) return;
-    setStatus("sending");
+  const generate = async () => {
+    if (!photo) return;
+    setStatus("generating");
     setErrorMsg("");
-    const payload = {
-      style: style.id,
-      styleName: style.name,
-      people,
-      artName: artName.trim(),
-      addons: selectedAddons.map((a) => ({ name: a.name, price: a.price })),
-      premium: {
-        tshirt,
-        tshirtSize: tshirt ? tshirtSize : null,
-        hires,
-        rush,
-      },
-      customer: { name: custName.trim(), email: email.trim(), notes: notes.trim() },
-      total,
-    };
     try {
       const fd = new FormData();
-      fd.append("order", JSON.stringify(payload));
       fd.append("photo", photo.blob, photo.name);
-      const res = await fetch("/api/order", { method: "POST", body: fd });
-      if (!res.ok) {
-        const j = await res.json().catch(() => ({}));
-        throw new Error(j.error || "Submission failed");
+      fd.append("style", styleId);
+      fd.append("addons", JSON.stringify([...addons]));
+      const res = await fetch("/api/generate", { method: "POST", body: fd });
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(j.error || "Generation failed.");
+      const falUrl: string = j.url;
+
+      // Burn the name on via a same-origin proxy; fall back to the raw art.
+      let display = falUrl;
+      let download = `/api/download?url=${encodeURIComponent(falUrl)}`;
+      try {
+        const composed = await burnName(
+          `/api/download?url=${encodeURIComponent(falUrl)}&inline=1`,
+          artName,
+        );
+        display = composed;
+        download = composed;
+      } catch {
+        /* keep raw art fallback */
       }
+      setResultUrl(display);
+      setDownloadUrl(download);
       setStatus("done");
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (e) {
       setStatus("error");
-      setErrorMsg(
-        e instanceof Error ? e.message : "Something went wrong. Try again.",
-      );
+      setErrorMsg(e instanceof Error ? e.message : "Something went wrong.");
     }
   };
 
-  /* ---------- success screen ---------- */
-  if (status === "done") {
+  const reset = () => {
+    setStatus("idle");
+    setResultUrl(null);
+    setDownloadUrl("");
+    setErrorMsg("");
+  };
+
+  /* ---------------- result screen ---------------- */
+  if (status === "done" && resultUrl) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-24 text-center sm:px-6">
-        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-2xl border-2 border-[#050309] bg-gradient-to-br from-money to-neon-cyan text-[#06120b]">
-          <PartyPopper size={38} />
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl border-2 border-[#050309] bg-gradient-to-br from-money to-neon-cyan text-[#06120b]">
+          <Sparkles size={30} />
         </div>
         <h1 className="title-gta mt-6 text-4xl sm:text-5xl">You&rsquo;re in the game</h1>
-        <p className="mx-auto mt-4 max-w-md text-lg text-ash">
-          Your order for <span className="text-bone">{artName}</span> is in. We&rsquo;ll
-          email <span className="text-bone">{email}</span> within a few hours to
-          confirm the details and arrange payment. No charge yet.
+        <p className="mx-auto mt-3 max-w-md text-ash">
+          Here&rsquo;s your GTA-style character. Download it, or generate another.
         </p>
-        <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-          <Link href="/" className="btn btn-ghost">
-            Back to home
-          </Link>
-          <a href={SITE.whatsapp} target="_blank" rel="noreferrer" className="btn btn-primary">
-            Message us on WhatsApp
-          </a>
+
+        <div className="mx-auto mt-8 max-w-md">
+          <Art
+            src={resultUrl}
+            alt={`${artName || "Your"} GTA V character`}
+            className="aspect-[4/5] w-full"
+          />
         </div>
+
+        <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <a href={downloadUrl} download="wanted-level.jpg" className="btn btn-primary">
+            <Download size={18} /> Download
+          </a>
+          <button onClick={reset} className="btn btn-ghost">
+            <RefreshCw size={16} /> Generate another
+          </button>
+        </div>
+        <Link
+          href="/#gallery"
+          className="mt-6 inline-block text-sm text-neon-cyan underline-offset-4 hover:underline"
+        >
+          See more characters in the gallery
+        </Link>
       </div>
     );
   }
 
   return (
     <div className="mx-auto max-w-7xl px-4 pb-24 pt-28 sm:px-6 sm:pt-32">
-      {/* header */}
       <div className="max-w-2xl">
         <Link href="/" className="text-sm text-ash transition-colors hover:text-bone">
           ← Back to home
@@ -254,8 +255,8 @@ export default function OrderBuilder({
           Build your character
         </h1>
         <p className="mt-3 text-lg text-ash">
-          Set your scene, drop a photo and we&rsquo;ll draw you into the game. Delivered
-          in {SITE.turnaround}.
+          Set your scene, drop a photo and generate your GTA V character. Free to
+          download.
         </p>
       </div>
 
@@ -277,7 +278,7 @@ export default function OrderBuilder({
                         : "border-white/10 hover:border-white/25"
                     }`}
                   >
-                    <div className="relative aspect-[4/3] art-fallback overflow-hidden">
+                    <div className="art-fallback relative aspect-[4/3] overflow-hidden">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={ART[s.art as keyof typeof ART]}
@@ -314,8 +315,8 @@ export default function OrderBuilder({
                   {people} {people === 1 ? "character" : "characters"}
                 </p>
                 <p className="text-sm text-ash">
-                  Base price {price(basePrice)}
-                  {people === MAX_PEOPLE && " · 6+? message us for a quote"}
+                  We use whoever is in your photo
+                  {people === MAX_PEOPLE && " · a whole crew? drop a group shot"}
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -417,7 +418,7 @@ export default function OrderBuilder({
           </Step>
 
           {/* Step 4: name */}
-          <Step n={4} title="The name on your art">
+          <Step n={4} title="The name on your art" optional>
             <input
               value={artName}
               onChange={(e) => setArtName(e.target.value)}
@@ -441,7 +442,7 @@ export default function OrderBuilder({
                   <button
                     key={a.id}
                     onClick={() => toggleAddon(a.id)}
-                    className={`flex items-start gap-3 rounded-xl border-2 p-3.5 text-left transition-all ${
+                    className={`flex items-center gap-3 rounded-xl border-2 p-3.5 text-left transition-all ${
                       on
                         ? "border-neon-pink bg-neon-pink/10"
                         : "border-white/10 hover:border-white/25"
@@ -454,164 +455,70 @@ export default function OrderBuilder({
                     >
                       <Icon name={a.icon} size={18} />
                     </span>
-                    <span className="min-w-0">
-                      <span className="block text-sm font-semibold text-bone">
-                        {a.name}
-                      </span>
-                      <span className="block text-xs text-money">
-                        +{price(a.price)}
-                      </span>
-                    </span>
+                    <span className="text-sm font-semibold text-bone">{a.name}</span>
                   </button>
                 );
               })}
             </div>
           </Step>
-
-          {/* Step 6: premium */}
-          <Step n={6} title="Premium add-ons" optional>
-            <div className="flex flex-col gap-3">
-              <PremiumRow
-                active={tshirt}
-                onToggle={() => setTshirt((v) => !v)}
-                name={PREMIUM.tshirt.name}
-                blurb={PREMIUM.tshirt.blurb}
-                priceLabel={`+${price(PREMIUM.tshirt.price)}`}
-              >
-                {tshirt && (
-                  <div className="mt-3 flex flex-wrap items-center gap-2">
-                    <span className="text-sm text-ash">Size:</span>
-                    {TSHIRT_SIZES.map((sz) => (
-                      <button
-                        key={sz}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setTshirtSize(sz);
-                        }}
-                        className={`h-9 w-11 rounded-lg border-2 text-sm font-semibold transition-colors ${
-                          tshirtSize === sz
-                            ? "border-neon-pink bg-neon-pink/15 text-bone"
-                            : "border-white/15 text-ash hover:border-white/30"
-                        }`}
-                      >
-                        {sz}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </PremiumRow>
-              <PremiumRow
-                active={hires}
-                onToggle={() => setHires((v) => !v)}
-                name={PREMIUM.hires.name}
-                blurb={PREMIUM.hires.blurb}
-                priceLabel={`+${price(PREMIUM.hires.price)}`}
-              />
-              <PremiumRow
-                active={rush}
-                onToggle={() => setRush((v) => !v)}
-                name={PREMIUM.rush.name}
-                blurb={PREMIUM.rush.blurb}
-                priceLabel={`+${price(PREMIUM.rush.price)}`}
-              />
-            </div>
-          </Step>
-
-          {/* Step 7: details */}
-          <Step n={7} title="Your details">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Your name">
-                <input
-                  value={custName}
-                  onChange={(e) => setCustName(e.target.value)}
-                  placeholder="Jane Doe"
-                  className="input"
-                />
-              </Field>
-              <Field label="Email *">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@email.com"
-                  className="input"
-                />
-              </Field>
-              <div className="sm:col-span-2">
-                <Field label="Anything else? (optional)">
-                  <textarea
-                    value={notes}
-                    onChange={(e) => setNotes(e.target.value)}
-                    rows={3}
-                    placeholder="Who's who in the photo, outfit ideas, the city you want in the background…"
-                    className="input resize-none"
-                  />
-                </Field>
-              </div>
-            </div>
-          </Step>
         </div>
 
-        {/* ---------------- sticky summary ---------------- */}
+        {/* ---------------- sticky generate panel ---------------- */}
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <div className="rounded-2xl border border-white/10 bg-noir-800/80 p-6 backdrop-blur-xl">
             <div className="flex items-center justify-between">
-              <h2 className="font-display text-xl uppercase text-bone">
-                Your order
-              </h2>
+              <h2 className="font-display text-xl uppercase text-bone">Your setup</h2>
               <WantedStars level={5} size={15} />
             </div>
 
             <dl className="mt-5 flex flex-col gap-2.5 text-sm">
-              <Line label={`${style.name} · ${people} ${people === 1 ? "person" : "people"}`} value={price(basePrice)} />
-              {selectedAddons.map((a) => (
-                <Line key={a.name} label={a.name} value={`+${price(a.price)}`} muted />
-              ))}
-              {tshirt && (
-                <Line label={`T-shirt (${tshirtSize})`} value={`+${price(PREMIUM.tshirt.price)}`} muted />
-              )}
-              {hires && <Line label="Hi-res file" value={`+${price(PREMIUM.hires.price)}`} muted />}
-              {rush && <Line label="24h rush" value={`+${price(PREMIUM.rush.price)}`} muted />}
+              <Line label="Style" value={style.name} />
+              <Line label="People" value={String(people)} />
+              <Line
+                label="Add-ons"
+                value={
+                  selectedAddons.length
+                    ? selectedAddons.map((a) => a.name).join(", ")
+                    : "None"
+                }
+              />
             </dl>
 
-            <div className="mt-5 flex items-baseline justify-between border-t border-white/10 pt-5">
-              <span className="text-sm uppercase tracking-wider text-ash">Total</span>
-              <span className="font-display text-4xl text-bone">{price(total)}</span>
-            </div>
-
             <button
-              onClick={submit}
-              disabled={!valid || status === "sending"}
-              className="btn btn-primary mt-5 w-full disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={generate}
+              disabled={!valid || status === "generating"}
+              className="btn btn-primary mt-6 w-full disabled:cursor-not-allowed disabled:opacity-40"
             >
-              {status === "sending" ? (
+              {status === "generating" ? (
                 <>
-                  <Loader2 size={18} className="animate-spin" /> Sending…
+                  <Loader2 size={18} className="animate-spin" /> Generating…
                 </>
               ) : (
-                "Place my order"
+                <>
+                  <Wand2 size={18} /> Generate my character
+                </>
               )}
             </button>
 
             {!valid && (
               <p className="mt-3 text-center text-xs text-ash">
-                Add a photo, a name and your email to continue.
+                Add a photo to generate.
+              </p>
+            )}
+            {status === "generating" && (
+              <p className="mt-3 text-center text-xs text-ash">
+                This takes up to a minute. Hang tight.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="mt-3 rounded-xl border border-neon-hot/40 bg-neon-hot/10 p-3 text-sm text-bone">
+                {errorMsg}
               </p>
             )}
 
-            {status === "error" && (
-              <div className="mt-4 rounded-xl border border-neon-hot/40 bg-neon-hot/10 p-3 text-sm text-bone">
-                <p className="font-semibold">Couldn&rsquo;t submit automatically.</p>
-                <p className="mt-1 text-ash">{errorMsg}</p>
-                <a href={buildMailto()} className="mt-2 inline-flex items-center gap-1.5 text-neon-cyan underline-offset-4 hover:underline">
-                  <Mail size={14} /> Email your order instead
-                </a>
-              </div>
-            )}
-
             <p className="mt-4 flex items-center justify-center gap-1.5 text-center text-xs text-ash">
-              <ShieldCheck size={14} className="text-money" />
-              No payment now, we confirm first.
+              <Sparkles size={14} className="text-money" />
+              Free to generate and download.
             </p>
           </div>
         </aside>
@@ -676,71 +583,11 @@ function StepperBtn({
   );
 }
 
-function PremiumRow({
-  active,
-  onToggle,
-  name,
-  blurb,
-  priceLabel,
-  children,
-}: {
-  active: boolean;
-  onToggle: () => void;
-  name: string;
-  blurb: string;
-  priceLabel: string;
-  children?: React.ReactNode;
-}) {
+function Line({ label, value }: { label: string; value: string }) {
   return (
-    <div
-      onClick={onToggle}
-      className={`cursor-pointer rounded-2xl border-2 p-4 transition-all ${
-        active ? "border-sun bg-sun/5" : "border-white/10 hover:border-white/25"
-      }`}
-    >
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <p className="font-display text-lg uppercase text-bone">{name}</p>
-          <p className="mt-0.5 text-sm text-ash">{blurb}</p>
-        </div>
-        <div className="flex flex-none items-center gap-3">
-          <span className="font-display text-money">{priceLabel}</span>
-          <span
-            className={`flex h-6 w-6 items-center justify-center rounded-md border-2 border-[#050309] ${
-              active ? "bg-sun text-[#0a0510]" : "bg-noir-700 text-transparent"
-            }`}
-          >
-            <Check size={14} strokeWidth={3} />
-          </span>
-        </div>
-      </div>
-      {children}
-    </div>
-  );
-}
-
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <label className="flex flex-col gap-1.5">
-      <span className="text-sm font-medium text-ash">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-function Line({
-  label,
-  value,
-  muted,
-}: {
-  label: string;
-  value: string;
-  muted?: boolean;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-3">
-      <dt className={muted ? "text-ash" : "text-bone"}>{label}</dt>
-      <dd className={muted ? "text-ash" : "font-semibold text-bone"}>{value}</dd>
+    <div className="flex items-start justify-between gap-3">
+      <dt className="text-ash">{label}</dt>
+      <dd className="max-w-[60%] text-right font-medium text-bone">{value}</dd>
     </div>
   );
 }

@@ -8,7 +8,9 @@ export const runtime = "nodejs";
  * Only fal.media URLs are allowed, to avoid being an open proxy.
  */
 export async function GET(request: Request) {
-  const src = new URL(request.url).searchParams.get("url");
+  const params = new URL(request.url).searchParams;
+  const src = params.get("url");
+  const inline = params.get("inline") === "1";
   if (!src) {
     return NextResponse.json({ error: "Missing url." }, { status: 400 });
   }
@@ -33,14 +35,16 @@ export async function GET(request: Request) {
     }
     const contentType = res.headers.get("content-type") || "image/jpeg";
     const ext = contentType.includes("png") ? "png" : "jpg";
-    return new NextResponse(res.body, {
-      status: 200,
-      headers: {
-        "Content-Type": contentType,
-        "Content-Disposition": `attachment; filename="wanted-level.${ext}"`,
-        "Cache-Control": "no-store",
-      },
-    });
+    const headers: Record<string, string> = {
+      "Content-Type": contentType,
+      "Cache-Control": "no-store",
+    };
+    // inline mode is used same-origin by the name-compositing canvas so it can
+    // export without tainting; default mode forces a file download.
+    if (!inline) {
+      headers["Content-Disposition"] = `attachment; filename="wanted-level.${ext}"`;
+    }
+    return new NextResponse(res.body, { status: 200, headers });
   } catch {
     return NextResponse.json({ error: "Download failed." }, { status: 502 });
   }
