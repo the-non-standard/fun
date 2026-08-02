@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   WANTED LEVEL — design tokens
+   WANTED LEVEL design tokens
    ============================================================ */
 @theme {
   --font-display: var(--font-anton);
@@ -140,7 +140,7 @@ body::after {
 }
 
 /* ============================================================
-   Poster frame — echoes GTA cover panels
+   Poster frame: echoes GTA cover panels
    ============================================================ */
 .poster-frame {
   position: relative;

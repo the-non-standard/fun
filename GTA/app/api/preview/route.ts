@@ -17,7 +17,7 @@ export const maxDuration = 60;
 const MODEL = process.env.FAL_PREVIEW_MODEL || "fal-ai/nano-banana/edit";
 
 const PROMPT =
-  "Transform this exact person into a 3D character in the style of the Grand Theft Auto San Andreas and Vice City video game, PS2 era in-game render, standing full body on a sunny Miami Ocean Drive sidewalk with palm trees and pastel art deco buildings, third person in-game camera. Keep the same face, hairstyle, skin tone and outfit so they are clearly recognizable. No text, no watermark, no UI.";
+  "Transform this exact person into a character in the Grand Theft Auto V official cover art style: cel-shaded illustration with bold clean black outlines and vibrant saturated colors, high contrast dramatic lighting, posed confidently on a sunny Vice City street with palm trees and pastel art deco buildings. Keep the same face, hairstyle, skin tone and outfit so they stay clearly recognizable. No text, no watermark, no logo, no UI.";
 
 export async function POST(request: Request) {
   const key = process.env.FAL_KEY;

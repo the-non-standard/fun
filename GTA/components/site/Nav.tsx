@@ -6,8 +6,7 @@ import { Menu, X } from "lucide-react";
 import { SITE } from "@/lib/config";
 import WantedStars from "./WantedStars";
 
-const LINKS: { href: string; label: string; badge?: boolean }[] = [
-  { href: "/ingame", label: "In-Game", badge: true },
+const LINKS = [
   { href: "/#how", label: "How it works" },
   { href: "/#gallery", label: "Gallery" },
   { href: "/#addons", label: "Add-ons" },
@@ -59,16 +58,9 @@ export default function Nav() {
             <Link
               key={l.href}
               href={l.href}
-              className={`text-sm font-medium transition-colors hover:text-bone ${
-                l.badge ? "text-neon-cyan" : "text-ash"
-              }`}
+              className="text-sm font-medium text-ash transition-colors hover:text-bone"
             >
               {l.label}
-              {l.badge && (
-                <span className="ml-1.5 rounded-full bg-neon-pink px-1.5 py-0.5 align-middle font-display text-[0.6rem] uppercase text-white">
-                  New
-                </span>
-              )}
             </Link>
           ))}
           <Link href="/order" className="btn btn-primary !py-2.5 !text-sm">
@@ -98,14 +90,9 @@ export default function Nav() {
               key={l.href}
               href={l.href}
               onClick={() => setOpen(false)}
-              className="flex items-center gap-2 rounded-lg px-3 py-3 text-base font-medium text-bone/90 hover:bg-white/5"
+              className="rounded-lg px-3 py-3 text-base font-medium text-bone/90 hover:bg-white/5"
             >
               {l.label}
-              {l.badge && (
-                <span className="rounded-full bg-neon-pink px-1.5 py-0.5 font-display text-[0.6rem] uppercase text-white">
-                  New
-                </span>
-              )}
             </Link>
           ))}
           <Link

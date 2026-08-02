@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, Play, Sparkles } from "lucide-react";
 import { ART, GALLERY } from "@/lib/art";
 import Art from "./Art";
 import WantedStars from "./WantedStars";
@@ -81,6 +81,13 @@ export default function Hero() {
               See the gallery
             </Link>
           </div>
+
+          <Link
+            href="/preview"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-neon-cyan underline-offset-4 hover:underline"
+          >
+            <Sparkles size={15} /> Try a free preview from your photo
+          </Link>
 
           <div className="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
             {[

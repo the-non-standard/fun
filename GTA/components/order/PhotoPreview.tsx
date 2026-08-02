@@ -3,7 +3,7 @@
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
 import { Upload, Loader2, X, Sparkles, RefreshCw } from "lucide-react";
-import GtaFrame from "@/components/site/GtaFrame";
+import Art from "@/components/site/Art";
 
 async function compress(file: File): Promise<Blob> {
   const dataUrl = await new Promise<string>((res, rej) => {
@@ -37,7 +37,6 @@ async function compress(file: File): Promise<Blob> {
 export default function PhotoPreview() {
   const [srcPreview, setSrcPreview] = useState<string | null>(null);
   const [blob, setBlob] = useState<Blob | null>(null);
-  const [name, setName] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [resultUrl, setResultUrl] = useState<string | null>(null);
   const [error, setError] = useState("");
@@ -132,14 +131,6 @@ export default function PhotoPreview() {
             </div>
           )}
 
-          <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            maxLength={18}
-            placeholder="Name for the tag (optional)"
-            className="input mt-4"
-          />
-
           <button
             onClick={run}
             disabled={!blob || status === "loading"}
@@ -175,7 +166,7 @@ export default function PhotoPreview() {
         <div>
           {resultUrl ? (
             <div>
-              <GtaFrame src={resultUrl} name={name || "You"} stars={4} />
+              <Art src={resultUrl} alt="Your GTA V style preview" className="aspect-[4/5] w-full" />
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link href="/order?tshirt=0" className="btn btn-primary flex-1">
                   Order this for real
@@ -186,7 +177,7 @@ export default function PhotoPreview() {
               </div>
             </div>
           ) : (
-            <div className="flex aspect-square w-full flex-col items-center justify-center rounded-[22px] border-2 border-dashed border-white/15 p-8 text-center">
+            <div className="flex aspect-[4/5] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/15 p-8 text-center">
               {status === "loading" ? (
                 <>
                   <Loader2 size={34} className="animate-spin text-neon-pink" />
@@ -196,7 +187,7 @@ export default function PhotoPreview() {
               ) : (
                 <>
                   <span className="font-display text-2xl uppercase text-bone/60">Your preview</span>
-                  <p className="mt-1 text-sm text-ash">appears here in the GTA frame</p>
+                  <p className="mt-1 text-sm text-ash">appears here in GTA V style</p>
                 </>
               )}
             </div>

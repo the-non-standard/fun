@@ -110,19 +110,14 @@ Other things to personalize before launch:
 
 ---
 
-## In-Game Mode & live preview
+## Live preview from a photo
 
-`/ingame` showcases the "In-Game" style: characters composited into a
-pixel-perfect GTA HUD (radar minimap, name tag, GTA logo, wanted stars,
-rounded border) via the `GtaFrame` component. The HUD is pure code, so it is
-identical on every order. "In-Game" is also selectable as a style in the order
-builder.
-
-The page includes a **live "preview from your photo"** tool (`/api/preview`)
-that runs an uploaded selfie through fal.ai image-to-image and drops the result
-into the frame. To enable it, set `FAL_KEY` (and optionally `FAL_PREVIEW_MODEL`)
-in your environment — see `.env.example`. Each preview spends fal credits, so
-add rate limiting before opening it to heavy public traffic.
+`/preview` lets a visitor upload a selfie and get an instant AI preview of
+themselves in the GTA V cover-art style, via fal.ai image-to-image
+(`/api/preview`). To enable it, set `FAL_KEY` (and optionally
+`FAL_PREVIEW_MODEL`) in your environment (see `.env.example`). Without a key the
+button politely says it is not enabled yet. Each preview spends fal credits, so
+add rate limiting before heavy public traffic.
 
 ## Notes
 

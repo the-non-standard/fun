@@ -14,9 +14,9 @@ export type Style = {
 
 export const STYLES: Style[] = [
   {
-    id: "ocean-drive",
-    name: "Ocean Drive",
-    blurb: "Daytime Miami beachfront, palms and pastel buildings behind you.",
+    id: "loading-screen",
+    name: "Loading Screen",
+    blurb: "The classic. One hero character, bold outlines, city sunset behind you.",
     art: "hero",
   },
   {
@@ -26,16 +26,16 @@ export const STYLES: Style[] = [
     art: "womanSuv",
   },
   {
-    id: "the-block",
-    name: "The Block",
-    blurb: "Neighborhood energy with a lowrider at golden hour.",
-    art: "charCigar",
+    id: "cover-grid",
+    name: "Cover Grid",
+    blurb: "Multi-panel cover art, perfect for a squad, each in their own frame.",
+    art: "group",
   },
   {
-    id: "the-crew",
-    name: "The Crew",
-    blurb: "Bring the whole squad into one in-game scene.",
-    art: "group",
+    id: "action-scene",
+    name: "Action Scene",
+    blurb: "You, the car, the crew, the whole scene drawn around you.",
+    art: "charWoman",
   },
 ];
 
@@ -56,7 +56,7 @@ export const PACKAGES: Package[] = [
     people: "1 person",
     peopleMax: 1,
     price: 29,
-    blurb: "One character, fully styled, dropped into the GTA world.",
+    blurb: "One character, fully styled. The classic cover-art hero shot.",
   },
   {
     id: "duo",

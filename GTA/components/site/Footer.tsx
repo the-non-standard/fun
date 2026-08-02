@@ -83,6 +83,7 @@ export default function Footer() {
               title="Order"
               links={[
                 { href: "/order", label: "Start my art" },
+                { href: "/preview", label: "Free preview" },
                 { href: "/order?tshirt=1", label: "Premium tee" },
                 { href: "/#faq", label: "FAQ" },
               ]}

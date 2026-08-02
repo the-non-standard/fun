@@ -1,9 +1,10 @@
 /**
  * Central art registry.
  * ---------------------------------------------------------------------------
- * Every character is rendered in the 3D GTA "in-game" style (San Andreas /
- * Vice City look). Images are generated with the fal.ai connector and hosted
- * on fal.media; they load directly in a visitor's browser.
+ * Every character is drawn in the GTA V cover-art illustration style
+ * (cel-shaded, bold black outlines, vibrant colors). Images are generated with
+ * the fal.ai connector and hosted on fal.media; they load directly in a
+ * visitor's browser.
  *
  * TO MAKE THEM PERMANENT (recommended before going live):
  *   1. Open each URL below in your browser and "Save image as…" into
@@ -14,29 +15,25 @@
  * ---------------------------------------------------------------------------
  */
 export const ART = {
-  // Daytime solo hero (Ocean Drive)
-  hero: "https://v3b.fal.media/files/b/0aa4b963/vyKN9BL0-R3ACd-4F3TJD_391e7e3bed56432ba46a15b91f4ff4fa.jpg",
-  // Solo man, lowrider + cigar (The Block)
-  charCigar:
-    "https://v3b.fal.media/files/b/0aa4b957/EIYLxCz7bRLh05ABMJH2__0ed0ffc718bd45b59d0eea49b63652df.jpg",
-  // Solo woman, daytime beachfront
+  // Solo hero, Ocean Drive at sunset
+  hero: "https://v3b.fal.media/files/b/0aa4ba26/o7S_YDvmwJLvlcmw1DNhj_be4ef2658d0c45fc806180843e779bd9.jpg",
+  // Solo woman, beach + convertible
   charWoman:
-    "https://v3b.fal.media/files/b/0aa4b955/_VelDtWgv2o5SJ_Vv8hDX_933e03160d8a4b59859ad05baa273ff4.jpg",
+    "https://v3b.fal.media/files/b/0aa4ba27/yyaopzZubl0lSTegxy6sf_0f8fce3dfb8a478b9f9dd0b82aa01c1a.jpg",
+  // Man walking two dobermans
+  dogs: "https://v3b.fal.media/files/b/0aa4ba29/upYzeDttVzZV627YRirCY_3bcb5e32026f420494d6c810e8654db6.jpg",
   // The crew (group)
   group:
-    "https://v3b.fal.media/files/b/0aa4b959/0Njfxp9Hn-JtSnWpxhFBC_4abb7be065654673bdeeaf9b1b0ae190.jpg",
-  // Premium tee with a GTA character print
-  tshirt:
-    "https://v3b.fal.media/files/b/0aa4b95f/B6I54R6_Fd617tM-Ex1uL_077734e1ae6348bebe2e50a4327f9b37.jpg",
-  // Couple
+    "https://v3b.fal.media/files/b/0aa4ba2a/BEkYdgzv7pOgjT47llPnh_361aa60980b94cea9a3be946e9f2900f.jpg",
+  // Couple at sunset
   couple:
-    "https://v3b.fal.media/files/b/0aa4b95c/gtStKU2mBms_lVLodpjx9_afbfbb8110014601bc61311db6a53e4d.jpg",
-  // Woman at night beside a luxury car (Neon Night)
+    "https://v3b.fal.media/files/b/0aa4ba2d/IuANHIyOeFJuOaeWqWzF3_a17afc20678141ee82807df9b8bcefe2.jpg",
+  // Woman at night beside a luxury car (neon)
   womanSuv:
-    "https://v3b.fal.media/files/b/0aa4b95d/rwqTW2rXKc5jSaERl_Vhd_65429f9bb03143e4ba312bc63171c415.jpg",
-  // Flagship hero render ("Big Mike") used on the In-Game showcase
-  ingameMan1:
-    "https://v3b.fal.media/files/b/0aa4b8b2/Wr2FVCY4mLn9UcZfxt6pq_a4d133ec9b014334aaee157d2a95914d.jpg",
+    "https://v3b.fal.media/files/b/0aa4ba2f/NM2S6a4cjPvKqb2T3t0vb_e564de1bf3294ed1bebc7dc07a9919e0.jpg",
+  // Premium tee with a GTA V character print
+  tshirt:
+    "https://v3b.fal.media/files/b/0aa4ba30/jRf9qaNUWrGFAA23T2-Br_2753a2febf3941c8a819080268aeb0a3.jpg",
 } as const;
 
 export type ArtKey = keyof typeof ART;
@@ -50,11 +47,10 @@ export type GalleryItem = {
 
 /** Ordered showcase used by the gallery + hero carousels. */
 export const GALLERY: GalleryItem[] = [
-  { key: "ingameMan1", title: "Big Mike", tag: "Ocean Drive", people: "Solo" },
-  { key: "hero", title: "Sunny Side", tag: "Ocean Drive", people: "Solo" },
+  { key: "hero", title: "Sunset King", tag: "Loading Screen", people: "Solo" },
   { key: "womanSuv", title: "Night Money", tag: "Neon Night", people: "Solo" },
-  { key: "charCigar", title: "The Block", tag: "Lowrider", people: "Solo" },
-  { key: "group", title: "The Whole Crew", tag: "The Crew", people: "Squad" },
-  { key: "couple", title: "Ride or Die", tag: "Beachfront", people: "Duo" },
+  { key: "dogs", title: "Guard of the Gang", tag: "Dobermans", people: "Solo" },
+  { key: "group", title: "The Whole Crew", tag: "Cover Grid", people: "Squad" },
+  { key: "couple", title: "Ride or Die", tag: "Sunset Strip", people: "Duo" },
   { key: "charWoman", title: "Vice Queen", tag: "Beachfront", people: "Solo" },
 ];

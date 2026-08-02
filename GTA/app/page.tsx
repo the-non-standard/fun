@@ -2,7 +2,6 @@ import Nav from "@/components/site/Nav";
 import Hero from "@/components/site/Hero";
 import Marquee from "@/components/site/Marquee";
 import HowItWorks from "@/components/site/HowItWorks";
-import InGameSection from "@/components/site/InGameSection";
 import GalleryCarousel from "@/components/site/GalleryCarousel";
 import AddonsShowcase from "@/components/site/AddonsShowcase";
 import TshirtSection from "@/components/site/TshirtSection";
@@ -37,7 +36,6 @@ export default function Home() {
         </div>
 
         <HowItWorks />
-        <InGameSection />
         <GalleryCarousel />
         <AddonsShowcase />
         <TshirtSection />
