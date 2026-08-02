@@ -264,7 +264,7 @@ export default function OrderBuilder({
         <div className="flex flex-col gap-12">
           {/* Step 1: style */}
           <Step n={1} title="Choose your style">
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {STYLES.map((s) => {
                 const active = s.id === styleId;
                 return (

@@ -4,6 +4,8 @@ import { ArrowRight, Check } from "lucide-react";
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import GtaFrame from "@/components/site/GtaFrame";
+import PhotoPreview from "@/components/order/PhotoPreview";
+import SectionHeading from "@/components/site/SectionHeading";
 import Reveal from "@/components/site/Reveal";
 import { ART } from "@/lib/art";
 import { SITE } from "@/lib/config";
@@ -76,8 +78,20 @@ export default function InGamePage() {
           </div>
         </section>
 
-        {/* sample grid */}
+        {/* live preview from your photo */}
         <section className="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28">
+          <SectionHeading
+            eyebrow="Try it now"
+            title={<>See yourself in the game</>}
+            subtitle="Upload a selfie and get an instant AI preview of your GTA character, right inside the frame. Free to try."
+          />
+          <div className="mt-12">
+            <PhotoPreview />
+          </div>
+        </section>
+
+        {/* sample grid */}
+        <section className="mx-auto max-w-7xl px-4 pb-20 sm:px-6 sm:pb-28">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {SAMPLES.map((s, i) => (
               <Reveal key={s.name} delay={i * 120}>

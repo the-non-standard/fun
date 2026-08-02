@@ -14,6 +14,12 @@ export type Style = {
 
 export const STYLES: Style[] = [
   {
+    id: "in-game",
+    name: "In-Game",
+    blurb: "You, dropped into a 3D GTA world with the radar map, your name and the GTA logo.",
+    art: "ingameMan1",
+  },
+  {
     id: "loading-screen",
     name: "Loading Screen",
     blurb: "The classic. One hero character, bold outlines, city sunset behind you.",
