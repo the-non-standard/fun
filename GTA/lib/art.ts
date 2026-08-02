@@ -19,7 +19,7 @@ export const ART = {
   hero: "https://v3b.fal.media/files/b/0aa4ba26/o7S_YDvmwJLvlcmw1DNhj_be4ef2658d0c45fc806180843e779bd9.jpg",
   // Solo woman, beach + convertible
   charWoman:
-    "https://v3b.fal.media/files/b/0aa4ba27/yyaopzZubl0lSTegxy6sf_0f8fce3dfb8a478b9f9dd0b82aa01c1a.jpg",
+    "https://v3b.fal.media/files/b/0aa4ba90/O3Xw8wYtEbEHFj_dY63d9_ac6ff9d4e60d4e5db28c9c1f2c5cf3fa.jpg",
   // Man walking two dobermans
   dogs: "https://v3b.fal.media/files/b/0aa4ba29/upYzeDttVzZV627YRirCY_3bcb5e32026f420494d6c810e8654db6.jpg",
   // The crew (group)
@@ -30,7 +30,7 @@ export const ART = {
     "https://v3b.fal.media/files/b/0aa4ba2d/IuANHIyOeFJuOaeWqWzF3_a17afc20678141ee82807df9b8bcefe2.jpg",
   // Woman at night beside a luxury car (neon)
   womanSuv:
-    "https://v3b.fal.media/files/b/0aa4ba2f/NM2S6a4cjPvKqb2T3t0vb_e564de1bf3294ed1bebc7dc07a9919e0.jpg",
+    "https://v3b.fal.media/files/b/0aa4ba96/4kIk37p_3DiT_Q3uviYv3_55b030e507e14cb4b5585e3e7000e239.jpg",
   // Premium tee with a GTA V character print
   tshirt:
     "https://v3b.fal.media/files/b/0aa4ba30/jRf9qaNUWrGFAA23T2-Br_2753a2febf3941c8a819080268aeb0a3.jpg",
