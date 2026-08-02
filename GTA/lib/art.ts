@@ -19,7 +19,7 @@ export const ART = {
   hero: "https://v3b.fal.media/files/b/0aa4ba26/o7S_YDvmwJLvlcmw1DNhj_be4ef2658d0c45fc806180843e779bd9.jpg",
   // Solo woman, beach + convertible
   charWoman:
-    "https://v3b.fal.media/files/b/0aa4ba90/O3Xw8wYtEbEHFj_dY63d9_ac6ff9d4e60d4e5db28c9c1f2c5cf3fa.jpg",
+    "https://v3b.fal.media/files/b/0aa4bbbf/QfbS4djuRykRADTxyYCNG_4171751eeb7b4565a71ce2b9b629690a.jpg",
   // Man walking two dobermans
   dogs: "https://v3b.fal.media/files/b/0aa4ba29/upYzeDttVzZV627YRirCY_3bcb5e32026f420494d6c810e8654db6.jpg",
   // The crew (group)

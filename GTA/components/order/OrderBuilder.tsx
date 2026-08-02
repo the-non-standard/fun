@@ -283,6 +283,9 @@ export default function OrderBuilder({
                         src={ART[s.art as keyof typeof ART]}
                         alt={s.name}
                         loading="lazy"
+                        onError={(e) => {
+                          e.currentTarget.style.display = "none";
+                        }}
                         className="h-full w-full object-cover"
                       />
                       {active && (

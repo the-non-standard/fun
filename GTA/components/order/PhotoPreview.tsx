@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState } from "react";
 import Link from "next/link";
-import { Upload, Loader2, X, Sparkles, RefreshCw } from "lucide-react";
+import { Upload, Loader2, X, Sparkles, RefreshCw, Download } from "lucide-react";
 import Art from "@/components/site/Art";
 
 async function compress(file: File): Promise<Blob> {
@@ -168,13 +168,22 @@ export default function PhotoPreview() {
             <div>
               <Art src={resultUrl} alt="Your GTA V style preview" className="aspect-[4/5] w-full" />
               <div className="mt-4 flex flex-wrap gap-3">
-                <Link href="/order?tshirt=0" className="btn btn-primary flex-1">
-                  Order this for real
-                </Link>
+                <a
+                  href={`/api/download?url=${encodeURIComponent(resultUrl)}`}
+                  className="btn btn-primary flex-1"
+                >
+                  <Download size={17} /> Download
+                </a>
                 <button onClick={reset} className="btn btn-ghost">
                   <RefreshCw size={16} /> New photo
                 </button>
               </div>
+              <Link
+                href="/order"
+                className="mt-3 block text-center text-sm text-neon-cyan underline-offset-4 hover:underline"
+              >
+                Want it hand-finished, high-res + on a tee? Order the full version →
+              </Link>
             </div>
           ) : (
             <div className="flex aspect-[4/5] w-full flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/15 p-8 text-center">
